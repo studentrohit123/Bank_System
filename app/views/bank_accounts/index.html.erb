@@ -1,0 +1,37 @@
+<h2>Bank Accounts</h2>
+<table border="1">
+  <tr>
+    <th>Name</th>
+    <th>Balance</th>
+    <th>Min Balance Enforced?</th>
+    <th>Min Balance</th>
+  </tr>
+  <% @bank_accounts.each do |account| %>
+    <tr>
+      <td><%= account.name %></td>
+      <td><%= account.balance %></td>
+      <td><%= account.min_balance_enforced ? "Yes" : "No" %></td>
+      <td><%= account.min_balance || "N/A" %></td>
+    </tr>
+  <% end %>
+</table>
+
+<h2>Invest Money</h2>
+<form action="/invest" method="post">
+  <%= csrf_meta_tags %>
+  <input type="number" name="amount" placeholder="Enter amount" required>
+  <input type="submit" value="Invest">
+</form>
+
+<% if @result %>
+  <h3>Investment Result:</h3>
+  <% if @result == "NO MATCH" %>
+    <p>No suitable accounts found.</p>
+  <% else %>
+    <ul>
+      <% @result.each do |r| %>
+        <li><%= r[:name] %> - <%= r[:deducted] %></li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
